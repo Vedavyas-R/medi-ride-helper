@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "@/context/AppContext";
@@ -89,7 +88,6 @@ const BookingForm = () => {
       (position) => {
         const { latitude, longitude } = position.coords;
         
-        // Get address from coordinates (simplified for demo)
         const mockAddress = `Location at ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
         
         setFormData(prev => ({
@@ -112,25 +110,30 @@ const BookingForm = () => {
   };
 
   const nextStep = () => {
-    // Validate current step
     if (currentStep === 1) {
       if (!formData.patientName || !formData.contactNumber) {
         toast.error("Please fill all required fields in patient information");
         return;
       }
+      setCurrentStep(2);
+      return;
     }
     
-    setCurrentStep(prev => prev + 1);
+    if (currentStep === 2) {
+      setCurrentStep(3);
+      return;
+    }
   };
 
   const prevStep = () => {
-    setCurrentStep(prev => prev - 1);
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Final validation
     if (!formData.patientName || !formData.contactNumber || !formData.pickupLocation) {
       toast.error("Please fill all required fields");
       return;
@@ -142,7 +145,6 @@ const BookingForm = () => {
     }
     
     try {
-      // Convert form data to booking details format
       const bookingDetails = {
         patientName: formData.patientName,
         contactNumber: formData.contactNumber,
@@ -163,6 +165,8 @@ const BookingForm = () => {
   };
 
   const renderStepContent = () => {
+    console.log("Current step:", currentStep);
+    
     switch (currentStep) {
       case 1:
         return (
