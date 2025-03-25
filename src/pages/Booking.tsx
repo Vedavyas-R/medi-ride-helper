@@ -13,6 +13,8 @@ const Booking = () => {
   
   // If there's an active booking, redirect to tracking
   useEffect(() => {
+    console.log("Booking page loaded, checking current booking:", currentBooking);
+    
     if (currentBooking && 
         currentBooking.status !== "cancelled" && 
         currentBooking.status !== "completed") {

@@ -109,24 +109,33 @@ const BookingForm = () => {
     );
   };
 
-  const nextStep = () => {
+  const nextStep = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    
+    console.log("Current step before next:", currentStep);
+    
     if (currentStep === 1) {
       if (!formData.patientName || !formData.contactNumber) {
         toast.error("Please fill all required fields in patient information");
         return;
       }
       setCurrentStep(2);
+      console.log("Moving to step 2");
       return;
     }
     
     if (currentStep === 2) {
       setCurrentStep(3);
+      console.log("Moving to step 3");
       return;
     }
   };
 
-  const prevStep = () => {
+  const prevStep = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    
     if (currentStep > 1) {
+      console.log("Moving back to step:", currentStep - 1);
       setCurrentStep(currentStep - 1);
     }
   };
@@ -165,7 +174,7 @@ const BookingForm = () => {
   };
 
   const renderStepContent = () => {
-    console.log("Current step:", currentStep);
+    console.log("Rendering step content for step:", currentStep);
     
     switch (currentStep) {
       case 1:
@@ -216,7 +225,7 @@ const BookingForm = () => {
               </div>
             </CardContent>
             <CardFooter className="justify-end border-t bg-muted/10 px-6 py-4">
-              <Button onClick={nextStep}>
+              <Button type="button" onClick={nextStep}>
                 Next
                 <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
@@ -265,11 +274,11 @@ const BookingForm = () => {
               </RadioGroup>
             </CardContent>
             <CardFooter className="flex justify-between border-t bg-muted/10 px-6 py-4">
-              <Button variant="outline" onClick={prevStep}>
+              <Button type="button" variant="outline" onClick={prevStep}>
                 <ArrowLeft className="mr-1 h-4 w-4" />
                 Back
               </Button>
-              <Button onClick={nextStep}>
+              <Button type="button" onClick={nextStep}>
                 Next
                 <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
@@ -354,11 +363,12 @@ const BookingForm = () => {
               </div>
             </CardContent>
             <CardFooter className="flex justify-between border-t bg-muted/10 px-6 py-4">
-              <Button variant="outline" onClick={prevStep}>
+              <Button type="button" variant="outline" onClick={prevStep}>
                 <ArrowLeft className="mr-1 h-4 w-4" />
                 Back
               </Button>
               <Button 
+                type="button"
                 onClick={handleSubmit} 
                 disabled={isLoading || !mapInteractionComplete}
                 className="min-w-32"
@@ -401,9 +411,9 @@ const BookingForm = () => {
         </div>
       </div>
       
-      <form className="space-y-6">
+      <div className="space-y-6">
         {renderStepContent()}
-      </form>
+      </div>
     </div>
   );
 };
